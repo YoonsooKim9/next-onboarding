@@ -2,6 +2,7 @@ import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import { useCallback, useMemo } from 'react'
 import { toast } from 'react-hot-toast'
+import { useMutation } from '@tanstack/react-query'
 
 import { SafeUser } from '@/type'
 
@@ -18,9 +19,22 @@ const useFavorite = ({ listingId, currentUser }: IUseFavorite) => {
 
   const hasFavorited = useMemo(() => {
     const list = currentUser?.favoriteIds || []
-
     return list.includes(listingId)
   }, [currentUser, listingId])
+
+  const { mutate } = useMutation({
+    mutationFn: async () => {
+      let request: () => Promise<void> = hasFavorited
+        ? () => axios.delete(`/api/favorites/${listingId}`)
+        : () => axios.post(`/api/favorites/${listingId}`)
+      await request()
+    },
+    onSuccess: () => {
+      router.refresh()
+      toast.success('Success')
+    },
+    onError: () => toast.error('Something went wrong.'),
+  })
 
   const toggleFavorite = useCallback(
     async (e: React.MouseEvent<HTMLDivElement>) => {
@@ -30,23 +44,9 @@ const useFavorite = ({ listingId, currentUser }: IUseFavorite) => {
         return loginModal.onOpen()
       }
 
-      try {
-        let request: () => Promise<void>
-
-        if (hasFavorited) {
-          request = () => axios.delete(`/api/favorites/${listingId}`)
-        } else {
-          request = () => axios.post(`/api/favorites/${listingId}`)
-        }
-
-        await request()
-        router.refresh()
-        toast.success('Success')
-      } catch (error) {
-        toast.error('Something went wrong.')
-      }
+      mutate()
     },
-    [currentUser, hasFavorited, router, loginModal, listingId]
+    [currentUser, loginModal, listingId, mutate]
   )
 
   return {

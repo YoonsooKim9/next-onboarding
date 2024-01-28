@@ -4,6 +4,7 @@ import { useCallback, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'react-hot-toast'
 import axios from 'axios'
+import { useMutation } from '@tanstack/react-query'
 
 import { SafeReservation, SafeUser } from '@/type'
 import ListingCard from '../components/listings/ListingCard'
@@ -20,24 +21,19 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
   const router = useRouter()
   const [deletingId, setDeletingId] = useState('')
 
-  const onCancel = useCallback(
-    (id: string) => {
-      setDeletingId(id)
-      axios
-        .delete(`/api/reservations/${id}`)
-        .then(() => {
-          toast.success('Reservation canceled')
-          router.refresh()
-        })
-        .catch((err) => {
-          toast.error('Something went wrong')
-        })
-        .finally(() => {
-          setDeletingId('')
-        })
+  const { mutate } = useMutation({
+    mutationFn: async (id: string) =>
+      await axios.delete(`/api/reservations/${id}`),
+    onSuccess: () => {
+      toast.success('Reservation canceled')
+      router.refresh()
     },
-    [router]
-  )
+    onError: (err: any) => toast.error('Something went wrong'),
+    onMutate: (id) => setDeletingId(id),
+    onSettled: () => setDeletingId(''),
+  })
+
+  const onCancel = useCallback((id: string) => mutate(id), [mutate])
 
   return (
     <div

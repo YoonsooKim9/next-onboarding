@@ -6,6 +6,7 @@ import { differenceInCalendarDays, eachDayOfInterval } from 'date-fns'
 import axios from 'axios'
 import { toast } from 'react-hot-toast'
 import { Range } from 'react-date-range'
+import { useMutation } from '@tanstack/react-query'
 
 import { useLoginModal } from '@/app/hooks/useModal'
 
@@ -57,12 +58,22 @@ const ListingClient: React.FC<ListingClientProps> = ({
   const [totalPrice, setTotalPrice] = useState(listing.price)
   const [dateRange, setDateRange] = useState<Range>(initialDateRange)
 
+  const { mutate } = useMutation({
+    mutationFn: async (data: any) => axios.post('/api/reservations', data),
+    onSuccess: () => {
+      toast.success('Reservation success')
+      setDateRange(initialDateRange)
+      router.push('/trips')
+    },
+    onError: () => toast.error('Something went wrong'),
+    onMutate: () => setIsLoading(true),
+    onSettled: () => setIsLoading(false),
+  })
+
   const onCreateReservation = useCallback(() => {
     if (!currentUser) {
       return loginModal.onOpen()
     }
-
-    setIsLoading(true)
 
     const data = {
       totalPrice,
@@ -70,20 +81,8 @@ const ListingClient: React.FC<ListingClientProps> = ({
       endDate: dateRange.endDate,
       listingId: listing?.id,
     }
-    axios
-      .post('/api/reservations', data)
-      .then(() => {
-        toast.success('Reservation success')
-        setDateRange(initialDateRange)
-        router.push('/trips')
-      })
-      .catch((error) => {
-        toast.error('Something went wrong')
-      })
-      .finally(() => {
-        setIsLoading(false)
-      })
-  }, [totalPrice, dateRange, listing?.id, currentUser, loginModal, router])
+    mutate(data)
+  }, [totalPrice, dateRange, listing?.id, currentUser, loginModal, mutate])
 
   useEffect(() => {
     if (dateRange.startDate && dateRange.endDate) {

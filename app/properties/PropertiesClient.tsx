@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation'
 import { useState, useCallback } from 'react'
 import axios from 'axios'
+import { useMutation } from '@tanstack/react-query'
 
 import { SafeListing, SafeUser } from '@/type'
 import { toast } from 'react-hot-toast'
@@ -20,25 +21,18 @@ const PropertiesClient: React.FC<PropertiesClientProps> = ({
   const router = useRouter()
   const [deletingId, setDeletingId] = useState('')
 
-  const onCancel = useCallback(
-    (id: string) => {
-      setDeletingId(id)
-
-      axios
-        .delete(`/api/listings/${id}`)
-        .then(() => {
-          toast.success('Listing deleted')
-          router.refresh()
-        })
-        .catch((err) => {
-          toast.error(err?.response?.data?.error)
-        })
-        .finally(() => {
-          setDeletingId('')
-        })
+  const { mutate } = useMutation({
+    mutationFn: async (id: string) => await axios.delete(`/api/listings/${id}`),
+    onSuccess: () => {
+      toast.success('Listing deleted')
+      router.refresh()
     },
-    [router]
-  )
+    onError: (err: any) => toast.error(err?.response?.data?.error),
+    onMutate: (id) => setDeletingId(id),
+    onSettled: () => setDeletingId(''),
+  })
+
+  const onCancel = useCallback((id: string) => mutate(id), [mutate])
 
   return (
     <div

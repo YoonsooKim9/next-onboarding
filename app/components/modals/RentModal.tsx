@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react'
 import { useForm, FieldValues, SubmitHandler } from 'react-hook-form'
 import { latLng } from 'leaflet'
 import dynamic from 'next/dynamic'
+import { useMutation } from '@tanstack/react-query'
 
 import { useRentModal } from '@/app/hooks/useModal'
 
@@ -56,7 +57,21 @@ const RentModal = () => {
     },
   })
 
-  // useForm()의 value 중 지정된 인자에 해당하는 data를 지켜보고 해당 값을 반환
+  const { mutate } = useMutation({
+    mutationFn: async (data: FieldValues) =>
+      await axios.post('/api/listings', data),
+    onSuccess: () => {
+      toast.success('Listing Created!')
+      router.refresh()
+      reset()
+      setStep(STEPS.CATEGORY)
+      rentModal.onClose()
+    },
+    onError: () => toast.error('Something went wrong.'),
+    onMutate: () => setIsLoading(true),
+    onSettled: () => setIsLoading(false),
+  })
+
   const category = watch('category')
   const location = watch('location')
   const guestCount = watch('guestCount')
@@ -66,13 +81,11 @@ const RentModal = () => {
   const price = watch('price')
   const description = watch('description')
 
-  // dynamic import(importing using dynamic). WHY?
   const Map = useMemo(
     () => dynamic(() => import('../Map'), { ssr: false }),
     [location]
   )
 
-  // "setValue()" from useForm does not re-render. Thus, we needs custom setter function.
   const setCustomValue = (id: string, value: any) => {
     setValue(id, value, {
       shouldDirty: true,
@@ -91,25 +104,9 @@ const RentModal = () => {
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     if (step !== STEPS.PRICE) {
-      return onNext() // last step이 아니면 submit시 다음 step으로
+      return onNext()
     }
-    setIsLoading(true)
-
-    axios
-      .post('/api/listings', data)
-      .then(() => {
-        toast.success('Listing Created!')
-        router.refresh()
-        reset() // reset the value to default
-        setStep(STEPS.CATEGORY)
-        rentModal.onClose()
-      })
-      .catch((error) => {
-        toast.error('Something went wrong.')
-      })
-      .finally(() => {
-        setIsLoading(false)
-      })
+    mutate(data)
   }
 
   const actionLabel = useMemo(() => {
@@ -154,7 +151,6 @@ const RentModal = () => {
               onClick={(label) => {
                 setCustomValue('category', label)
               }}
-              // this category is setted by setCustomValue when clicked.
               selected={category === item.label}
               label={item.label}
               icon={item.icon}

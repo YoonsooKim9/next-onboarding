@@ -4,6 +4,7 @@ import axios from 'axios'
 import { useCallback, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
+import { useMutation } from '@tanstack/react-query'
 
 import { AiFillGithub } from 'react-icons/ai'
 import { FcGoogle } from 'react-icons/fc'
@@ -34,23 +35,20 @@ function RegisterModal() {
     },
   })
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    setIsLoading(true)
+  const { mutate } = useMutation({
+    mutationFn: async (data: FieldValues) => {
+      await axios.post('/api/register', data)
+    },
+    onSuccess: () => {
+      toast.success('Register success')
+      registerModal.onClose()
+      loginModal.onOpen()
+    },
+    onError: () => toast.error('Something went wrong'),
+    onSettled: () => setIsLoading(false),
+  })
 
-    axios
-      .post('/api/register', data)
-      .then(() => {
-        toast.success('Register success')
-        registerModal.onClose()
-        loginModal.onOpen()
-      })
-      .catch((error) => {
-        toast.error('Something went wrong')
-      })
-      .finally(() => {
-        setIsLoading(false)
-      })
-  }
+  const onSubmit: SubmitHandler<FieldValues> = (data) => mutate(data)
 
   const toggle = useCallback(() => {
     registerModal.onClose()
