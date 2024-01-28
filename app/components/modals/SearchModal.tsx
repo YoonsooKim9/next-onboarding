@@ -13,7 +13,7 @@ import Modal from './Modal'
 import Heading from '../Heading'
 
 // hooks
-import useSearchModal from '@/app/hooks/modals/useSearchModal'
+import { useSearchModal } from '@/app/hooks/useModal'
 
 import CountrySelect, { CountrySelectValue } from '../inputs/CountrySelect'
 import Calender from '../inputs/Calender'

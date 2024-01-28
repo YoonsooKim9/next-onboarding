@@ -5,7 +5,7 @@ import { useForm, FieldValues, SubmitHandler } from 'react-hook-form'
 import { latLng } from 'leaflet'
 import dynamic from 'next/dynamic'
 
-import useRentModal from '@/app/hooks/modals/useRentModal'
+import { useRentModal } from '@/app/hooks/useModal'
 
 import { categories } from '../navbar/Categories'
 import Modal from './Modal'

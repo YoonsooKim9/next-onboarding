@@ -8,8 +8,7 @@ import { toast } from 'react-hot-toast'
 import { AiFillGithub } from 'react-icons/ai'
 import { FcGoogle } from 'react-icons/fc'
 
-import useRegisterModal from '@/app/hooks/modals/useRegisterModal'
-import useLoginModal from '@/app/hooks/modals/useLoginModal'
+import { useRegisterModal, useLoginModal } from '@/app/hooks/useModal'
 
 import Modal from './Modal'
 import Heading from '../Heading'

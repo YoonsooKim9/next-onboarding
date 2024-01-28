@@ -7,7 +7,7 @@ import axios from 'axios'
 import { toast } from 'react-hot-toast'
 import { Range } from 'react-date-range'
 
-import useLoginModal from '@/app/hooks/modals/useLoginModal'
+import { useLoginModal } from '@/app/hooks/useModal'
 
 import { SafeUser, SafeListing, SafeReservation } from '@/app/types'
 import { categories } from '@/app/components/navbar/Categories'

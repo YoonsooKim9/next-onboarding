@@ -9,13 +9,16 @@ import { AiOutlineMenu } from 'react-icons/ai'
 // components
 import Avatar from '../Avatar'
 import MenuItem from './MenuItem'
-import useRegisterModal from '@/app/hooks/modals/useRegisterModal'
-import useLoginModal from '@/app/hooks/modals/useLoginModal'
+
+import {
+  useRegisterModal,
+  useLoginModal,
+  useRentModal,
+} from '@/app/hooks/useModal'
 
 // import { User } from "@prisma/client";
 import { SafeUser } from '@/app/types'
 import { signOut } from 'next-auth/react'
-import useRentModal from '@/app/hooks/modals/useRentModal'
 import { useRouter } from 'next/navigation'
 
 interface UserMenuProps {
