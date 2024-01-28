@@ -1,4 +1,5 @@
-import ToasterProvider from './provider/ToasterProvider'
+import ToasterProvider from './providers/ToasterProvider'
+import ReactQueryProvider from './providers/ReactQueryProvider'
 import Navbar from './components/navbar/Navbar'
 
 import './globals.css'
@@ -23,9 +24,11 @@ export default async function RootLayout({
   return (
     <html lang='en'>
       <body className={font.className}>
-        <ToasterProvider />
-        <Navbar currentUser={currentUser as SafeUser} />
-        <div className='pb-20 pt-28'>{children}</div>
+        <ReactQueryProvider>
+          <ToasterProvider />
+          <Navbar currentUser={currentUser as SafeUser} />
+          <div className='pb-20 pt-28'>{children}</div>
+        </ReactQueryProvider>
       </body>
     </html>
   )
