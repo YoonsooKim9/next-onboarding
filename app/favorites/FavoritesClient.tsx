@@ -1,7 +1,7 @@
 import Container from '../components/Container'
 import Heading from '../components/Heading'
 import ListingCard from '../components/listings/ListingCard'
-import { SafeListing, SafeUser } from '../types'
+import { SafeListing, SafeUser } from '@/type'
 
 interface FavoritesClientProps {
   listings: SafeListing[]

@@ -7,7 +7,7 @@ import RentModal from './components/modals/RentModal'
 import './globals.css'
 import { Nunito } from 'next/font/google'
 import getCurrentUser from './actions/getCurrentUser'
-import { SafeUser } from './types'
+import { SafeUser } from '@/type'
 import SearchModal from './components/modals/SearchModal'
 
 const font = Nunito({ subsets: ['latin'] })

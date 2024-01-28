@@ -4,6 +4,8 @@ import getCurrentUser from '../actions/getCurrentUser'
 import getReservations from '../actions/getReservations'
 
 import TripsClient from './TripsClient'
+import Container from '../components/Container'
+import Heading from '../components/Heading'
 
 const TripsPage = async () => {
   const currentUser = await getCurrentUser()
@@ -25,7 +27,15 @@ const TripsPage = async () => {
     )
   }
 
-  return <TripsClient reservations={reservations} currentUser={currentUser} />
+  return (
+    <Container>
+      <Heading
+        title='Trips'
+        subtitle="Where you'be been and where you're heading"
+      />
+      <TripsClient reservations={reservations} currentUser={currentUser} />
+    </Container>
+  )
 }
 
 export default TripsPage

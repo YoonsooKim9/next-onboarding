@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { format } from 'date-fns'
 import Image from 'next/image'
 
-import { SafeListing, SafeUser, SafeReservation } from '@/app/types'
+import { SafeListing, SafeUser, SafeReservation } from '@/type'
 import useCountries from '@/app/hooks/useCountries'
 import HeartButton from '../HeartButton'
 import Button from '../Button'

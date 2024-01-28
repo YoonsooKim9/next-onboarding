@@ -17,7 +17,7 @@ import {
 } from '@/app/hooks/useModal'
 
 // import { User } from "@prisma/client";
-import { SafeUser } from '@/app/types'
+import { SafeUser } from '@/type'
 import { signOut } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 

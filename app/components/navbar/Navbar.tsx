@@ -1,15 +1,15 @@
-"use client";
+'use client'
 
-import Container from "../Container";
-import Logo from "./Logo";
-import Search from "./Search";
-import UserMenu from "./UserMenu";
-import Categories from "./Categories";
+import Container from '../Container'
+import Logo from './Logo'
+import Search from './Search'
+import UserMenu from './UserMenu'
+import Categories from './Categories'
 
-// import { SafeUser } from "@/app/types";
+// import { SafeUser } from "@/type";
 
 interface NavbarProps {
-  currentUser?: any | null;
+  currentUser?: any | null
 }
 
 const Navbar: React.FC<NavbarProps> = ({ currentUser }) => {
@@ -36,7 +36,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentUser }) => {
       </div>
       <Categories />
     </div>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar

@@ -9,7 +9,7 @@ import { Range } from 'react-date-range'
 
 import { useLoginModal } from '@/app/hooks/useModal'
 
-import { SafeUser, SafeListing, SafeReservation } from '@/app/types'
+import { SafeUser, SafeListing, SafeReservation } from '@/type'
 import { categories } from '@/app/components/navbar/Categories'
 import Container from '@/app/components/Container'
 import ListingHead from '@/app/components/listings/ListingHead'

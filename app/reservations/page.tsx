@@ -1,5 +1,7 @@
 import EmptyState from '../components/EmptyState'
 import ReservationsClient from './ReservationsClient'
+import Container from '../components/Container'
+import Heading from '../components/Heading'
 
 import getCurrentUser from '../actions/getCurrentUser'
 import getReservations from '../actions/getReservations'
@@ -25,7 +27,13 @@ const ReservationsPage = async () => {
   }
 
   return (
-    <ReservationsClient reservations={reservations} currentUser={currentUser} />
+    <Container>
+      <Heading title='Reservations' subtitle='Bookings on your properties' />
+      <ReservationsClient
+        reservations={reservations}
+        currentUser={currentUser}
+      />
+    </Container>
   )
 }
 
