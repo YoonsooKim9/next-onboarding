@@ -4,6 +4,8 @@ import getCurrentUser from '../actions/getCurrentUser'
 
 import PropertiesClient from './PropertiesClient'
 import getListings from '../actions/getListings'
+import Container from '../components/Container'
+import Heading from '../components/Heading'
 
 const PropertiesPage = async () => {
   const currentUser = await getCurrentUser()
@@ -25,7 +27,12 @@ const PropertiesPage = async () => {
     )
   }
 
-  return <PropertiesClient listings={listings} currentUser={currentUser} />
+  return (
+    <Container>
+      <Heading title='Properties' subtitle='List of your properties' />
+      <PropertiesClient listings={listings} currentUser={currentUser} />
+    </Container>
+  )
 }
 
 export default PropertiesPage

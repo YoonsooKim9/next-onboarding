@@ -4,8 +4,6 @@ import { useRouter } from 'next/navigation'
 import { useState, useCallback } from 'react'
 import axios from 'axios'
 
-import Container from '../components/Container'
-import Heading from '../components/Heading'
 import { SafeListing, SafeUser } from '@/type'
 import { toast } from 'react-hot-toast'
 import ListingCard from '../components/listings/ListingCard'
@@ -43,10 +41,8 @@ const PropertiesClient: React.FC<PropertiesClientProps> = ({
   )
 
   return (
-    <Container>
-      <Heading title='Properties' subtitle='List of your properties' />
-      <div
-        className='
+    <div
+      className='
             mt-10
             grid
             grid-cols-1
@@ -57,20 +53,19 @@ const PropertiesClient: React.FC<PropertiesClientProps> = ({
             2xl:grid-cols-6
             gap-8
         '
-      >
-        {listings.map((listing) => (
-          <ListingCard
-            key={listing.id}
-            data={listing}
-            actionId={listing.id}
-            onAction={onCancel}
-            disabled={deletingId === listing.id}
-            actionLabel='Delete property'
-            currentUser={currentUser}
-          />
-        ))}
-      </div>
-    </Container>
+    >
+      {listings.map((listing) => (
+        <ListingCard
+          key={listing.id}
+          data={listing}
+          actionId={listing.id}
+          onAction={onCancel}
+          disabled={deletingId === listing.id}
+          actionLabel='Delete property'
+          currentUser={currentUser}
+        />
+      ))}
+    </div>
   )
 }
 

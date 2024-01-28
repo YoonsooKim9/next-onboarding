@@ -1,10 +1,12 @@
 import { use } from 'react'
 
-import EmptyState from '../components/EmptyState'
-
 import getCurrentUser from '../actions/getCurrentUser'
 import getFavoriteListings from '../actions/getFavoriteListings'
+
+import EmptyState from '../components/EmptyState'
 import FavoritesClient from './FavoritesClient'
+import Container from '../components/Container'
+import Heading from '../components/Heading'
 
 const ListingPage = () => {
   const currentUser = use(getCurrentUser())
@@ -19,7 +21,15 @@ const ListingPage = () => {
     )
   }
 
-  return <FavoritesClient listings={listings} currentUser={currentUser} />
+  return (
+    <Container>
+      <Heading
+        title='Favorites'
+        subtitle='List of places you have favorited!'
+      />
+      <FavoritesClient listings={listings} currentUser={currentUser} />
+    </Container>
+  )
 }
 
 export default ListingPage

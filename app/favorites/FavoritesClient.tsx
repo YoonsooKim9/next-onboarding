@@ -1,5 +1,3 @@
-import Container from '../components/Container'
-import Heading from '../components/Heading'
 import ListingCard from '../components/listings/ListingCard'
 import { SafeListing, SafeUser } from '@/type'
 
@@ -13,13 +11,8 @@ const FavoritesClient: React.FC<FavoritesClientProps> = ({
   currentUser,
 }) => {
   return (
-    <Container>
-      <Heading
-        title='Favorites'
-        subtitle='List of places you have favorited!'
-      />
-      <div
-        className='
+    <div
+      className='
           mt-10
           grid
           grid-cols-1
@@ -30,16 +23,15 @@ const FavoritesClient: React.FC<FavoritesClientProps> = ({
           2xl:grid-cols-6
           gap-8
         '
-      >
-        {listings.map((listing) => (
-          <ListingCard
-            key={listing.id}
-            currentUser={currentUser}
-            data={listing}
-          />
-        ))}
-      </div>
-    </Container>
+    >
+      {listings.map((listing) => (
+        <ListingCard
+          key={listing.id}
+          currentUser={currentUser}
+          data={listing}
+        />
+      ))}
+    </div>
   )
 }
 
